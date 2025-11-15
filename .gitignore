@@ -2,8 +2,10 @@
 .pio/
 .vscode/
 *.elf
-*.bin
 *.hex
+
+# Allow firmware binaries in firmware/ directory
+!firmware/*.bin
 
 # Build artifacts
 build/
