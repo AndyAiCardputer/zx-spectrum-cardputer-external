@@ -22,13 +22,18 @@ ZX Spectrum 48K emulator for M5Stack Cardputer-Adv with external ILI9488 display
 
 ## Display Connection
 
-External display connects via EXT 2.54-14P connector:
+External ILI9488 display connects via EXT 2.54-14P connector:
 
-- **SCK** → PIN 7 (GPIO 40)
-- **MOSI** → PIN 9 (GPIO 14)
-- **CS** → PIN 13 (GPIO 5)
-- **DC** → PIN 5 (GPIO 6)
-- **RST** → PIN 1 (GPIO 3)
+| Display Pin | Connect To | Description |
+|-------------|-----------|-------------|
+| **VCC** | 3.3V or 5V | Power (check your module) |
+| **GND** | GND | Ground |
+| **SCK** | GPIO 40 (EXT PIN 7) | SPI Clock |
+| **MOSI** | GPIO 14 (EXT PIN 9) | SPI Data |
+| **CS** | GPIO 5 (EXT PIN 13) | Chip Select |
+| **DC** | GPIO 6 (EXT PIN 5) | Data/Command |
+| **RST** | GPIO 3 (EXT PIN 1) | Reset |
+| **BLK/LED** | 3.3V | Backlight (connect to 3.3V for always-on) |
 
 SD card shares SPI bus with display:
 - **SD CS** → GPIO 12
@@ -38,7 +43,7 @@ SD card shares SPI bus with display:
 - **CPU:** ESP32-S3 @ 240 MHz
 - **Z80 Emulation:** 3.5 MHz
 - **Memory:** 16 KB ROM + 48 KB RAM
-- **Display:** ILI9488 480×320, RGB565, 50 MHz SPI with DMA
+- **Display:** ILI9488 480×320, RGB666 (18-bit), 50 MHz SPI with DMA
 - **Audio:** 16 kHz I2S, double buffering, separate task on Core 1
 - **SD Card:** 40 MHz High Speed, shared SPI bus
 - **File Support:** .SNA, .Z80, .TAP formats
@@ -84,6 +89,35 @@ SD card shares SPI bus with display:
 - **Arrow keys:** Navigate menus
 - **Enter:** Select/Load
 - **ESC:** Back
+
+## Troubleshooting
+
+### Display is blank / white screen
+- Check all wiring connections (VCC, GND, SCK, MOSI, CS, DC, RST)
+- Make sure BLK/LED pin is connected to 3.3V (backlight)
+- Clean the contacts on the EXT connector
+- Verify your display module is ILI9488 (480×320)
+
+### Display image is mirrored or wrong orientation
+Different ILI9488 modules may have different default orientations. To fix:
+1. Open `src/main.cpp`
+2. Find the line: `externalDisplay.setRotation(3);`
+3. Try changing the value:
+   - `0` = Portrait
+   - `1` = Landscape (90°)
+   - `2` = Portrait (180°)
+   - `3` = Landscape (270°) -- default
+4. Build and upload again
+
+### No backlight
+- Some ILI9488 modules have a BLK/LED pin that must be connected to 3.3V
+- Some modules have backlight always on (internally connected)
+- If your module has a BLK pin, connect it to 3.3V or 5V
+
+### SD card not detected
+- SD card must be FAT32 formatted
+- Place game files in `/ZXgames/` folder on the SD card
+- Supported formats: .SNA, .Z80, .TAP
 
 ## Based On
 

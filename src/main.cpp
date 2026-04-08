@@ -621,7 +621,7 @@ void drawSplashScreen() {
   externalDisplay.setTextSize(2);  // было 1
   externalDisplay.setTextColor(TFT_CYAN);
   externalDisplay.setCursor(370, 20);  // было 185, 10
-  externalDisplay.print("V3.137");
+  externalDisplay.print("V3.138");
   
   // ═══ РАДУЖНЫЕ ПОЛОСКИ (диагональные) - УВЕЛИЧЕНО В 2 РАЗА ═══
   // Красный
@@ -687,7 +687,7 @@ void drawMainMenu() {
   externalDisplay.setTextSize(2);  // было 1
   externalDisplay.setTextColor(TFT_CYAN);
   externalDisplay.setCursor(100, 10);  // было 50, 5
-  externalDisplay.print("ZX Spectrum V3.137");
+  externalDisplay.print("ZX Spectrum V3.138");
   
   // ═══ РАМКА - УВЕЛИЧЕНО В 2 РАЗА ═══
   externalDisplay.drawRect(20, 40, 440, 220, TFT_WHITE);  // было 10, 20, 220, 110
@@ -1050,7 +1050,7 @@ void drawInformationScreen(int page) {
     
     externalDisplay.setTextColor(TFT_CYAN);
     externalDisplay.setCursor(180, y); y += 24;  // было 90, y += 12
-    externalDisplay.print("V3.137");
+    externalDisplay.print("V3.138");
     
     externalDisplay.setTextColor(TFT_MAGENTA);
     externalDisplay.setCursor(60, y);
@@ -1219,8 +1219,8 @@ void setup() {
   M5Cardputer.Speaker.begin();
   M5Cardputer.Speaker.setVolume(192);  // 0-255
   
-  // ✅ Disable built-in display backlight (we use external display)
-  externalDisplay.setBrightness(0);
+  // Disable built-in display backlight (we use external display)
+  M5Cardputer.Display.setBrightness(0);
   Serial.println("  ✓ Built-in display backlight: DISABLED");
   
   // Initialize SPI bus FIRST (before LCD, like in NES project)
@@ -1239,8 +1239,8 @@ void setup() {
   }
   
   Serial.println("  ✓ Display initialized!");
-  externalDisplay.setRotation(3);  // 180 degrees
-  externalDisplay.setColorDepth(16);  // 16-bit RGB565 for performance
+  externalDisplay.setRotation(3);
+  externalDisplay.setColorDepth(24);  // 18-bit RGB666 (native for ILI9488 over SPI)
   delay(50);
   
   externalDisplay.fillScreen(TFT_BLACK);
@@ -1254,7 +1254,7 @@ void setup() {
   
   Serial.println("\n\n");
   Serial.println("╔════════════════════════════════════╗");
-  Serial.println("║  ZX Spectrum V3.137 📁 Folders!    ║");
+  Serial.println("║  ZX Spectrum V3.138                ║");
   Serial.println("║  M5Stack Cardputer                 ║");
   Serial.println("╚════════════════════════════════════╝\n");
   

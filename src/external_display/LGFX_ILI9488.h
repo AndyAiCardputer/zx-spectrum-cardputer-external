@@ -24,10 +24,10 @@ struct Panel_ILI9488_Local : public lgfx::v1::Panel_LCD {
     }
 
     void setColorDepth_impl(lgfx::v1::color_depth_t depth) override {
-        (void)depth;
-        // Force 16-bit RGB565 for performance (2 bytes per pixel instead of 3)
-        _write_depth = lgfx::v1::color_depth_t::rgb565_2Byte;
-        _read_depth  = lgfx::v1::color_depth_t::rgb565_2Byte;
+        // ILI9488 over SPI natively supports 18-bit (RGB666, 3 bytes/pixel)
+        // RGB565 via SPI may not work reliably on all modules/library versions
+        _write_depth = lgfx::v1::color_depth_t::rgb888_3Byte;
+        _read_depth  = lgfx::v1::color_depth_t::rgb888_3Byte;
     }
 
 protected:
